@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 
 export const InfoData = new mongoose.Schema({
-  id: Number,
+  id: String,
   fullname: String,
   email: String,
 });

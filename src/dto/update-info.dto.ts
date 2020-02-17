@@ -1,5 +1,5 @@
 export class UpdateInfoDto {
-  readonly id: number;
+  readonly id: string;
   readonly fullname: string;
   readonly email: string;
 }
