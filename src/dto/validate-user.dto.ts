@@ -1,10 +1,10 @@
 import { IsString, IsInt } from 'class-validator';
 
-export class CreateInfoDto {
+export class ValidateUserDto {
   @IsString()
-  readonly id: string;
-  @IsString()
-  readonly fullname: string;
+  readonly name: string;
   @IsString()
   readonly email: string;
+  @IsString()
+  password: string;
 }
