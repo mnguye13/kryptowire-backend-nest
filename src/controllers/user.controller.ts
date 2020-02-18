@@ -14,6 +14,8 @@ import {
   HttpException,
   Request,
   UseGuards,
+  Inject,
+  forwardRef,
 } from '@nestjs/common';
 //import { Request, Response } from 'express';
 import { AppService } from '../app.service';
@@ -23,11 +25,12 @@ import { UsersService } from '../services/users.service';
 import { User } from '../interfaces/user.interface';
 import { ValidateUserDto } from '../dto/validate-user.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { AuthService } from '../auth/auth.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService, //private readonly authService: AuthService,
+  ) {}
 
   @Post('/register')
   @Header('Cache-Control', 'none')
@@ -35,28 +38,30 @@ export class UsersController {
     const res = await this.usersService.create(createUserDto);
     return res;
   }
-  /*
 
+  //@UseGuards(AuthGuard('local'))
   @Post('/login')
   async find(@Body() vaildateUserDto: ValidateUserDto) {
-    const res = await this.usersService.find(vaildateUserDto);
-    return res;
-  }*/
+    if (!vaildateUserDto.email || !vaildateUserDto.password) {
+      return { error: 'Invalid Input' };
+    } else {
+      const res = await this.usersService.find(vaildateUserDto);
+      return res;
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/profile')
+  getProfile(@Request() req) {
+    return req.user;
+  }
 
   /*
-  @UseGuards(AuthGuard('local'))
-  @Post('/login')
-  async login(@Request() req) {
-    return this.authService.login(req.user);
-    //console.log(req.body);
-    //return req.body;
-  }*/
-
   @Get()
   async findAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
-
+  
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
@@ -70,5 +75,5 @@ export class UsersController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.delete(id);
-  }
+  }*/
 }

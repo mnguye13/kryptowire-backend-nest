@@ -5,11 +5,13 @@ import { User } from '../interfaces/user.interface';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { ValidateUserDto } from '../dto/validate-user.dto';
+import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel('UserData') private readonly userModel: Model<User>,
+    private readonly jwtService: JwtService,
   ) {}
   /*---*/
 
@@ -34,10 +36,17 @@ export class UsersService {
     const email = validateUserDto.email;
     const password = validateUserDto.password;
     const user = await this.userModel.findOne({ email }).exec();
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (isMatch) {
-      const payload = { id: user._id, name: user.name };
-      return payload;
+    if (user) {
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (isMatch) {
+        const payload = { id: user._id, email: user.email, name: user.name };
+        console.log(payload);
+        return { accessToken: this.jwtService.sign(payload) };
+      } else {
+        return { error: 'User not found' };
+      }
+    } else {
+      return { error: 'User not found' };
     }
   }
   async findAll(): Promise<User[]> {
