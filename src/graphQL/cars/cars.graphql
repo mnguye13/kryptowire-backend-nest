@@ -1,0 +1,43 @@
+type Brand {
+  name: String!
+  origin: String!
+  models: [Model]
+}
+
+input BrandInput {
+  name: String!
+  origin: String!
+}
+
+input ModelInput {
+  label: String!
+  year: String
+  price: Int
+  brandName: String
+}
+
+input ModelPriceUpdate {
+  label: String!
+  price: Int
+}
+
+type Model {
+  label: String!
+  year: String
+  price: Int
+  brand: Brand
+}
+
+type Query {
+  info: String
+  getModels: [Model]
+  getBrands: [Brand]
+  getBrand(name: String!): Brand
+  getModel(label: String!): Model
+}
+
+type Mutation {
+  addBrand(brand: BrandInput): Brand
+  addModel(model: ModelInput): Model
+  updateCarPrice(model: ModelPriceUpdate): Model
+}
