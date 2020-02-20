@@ -88,4 +88,11 @@ export class CarsResolver {
     this.models.push(model);
     return model;
   }
+
+  @Mutation()
+  updateCarPrice(@Args('model') model: any) {
+    const car = this.models.find(car => car.label === model.label);
+    car.price = model.price;
+    return car;
+  }
 }
