@@ -19,11 +19,11 @@ import {
 } from '@nestjs/common';
 //import { Request, Response } from 'express';
 import { AppService } from '../app.service';
-import { CreateUserDto } from '../dto/create-user.dto';
-import { UpdateUserDto } from '../dto/update-user.dto';
-import { UsersService } from '../services/users.service';
-import { User } from '../interfaces/user.interface';
-import { ValidateUserDto } from '../dto/validate-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { UsersService } from './users.service';
+import { User } from './interface/user.interface';
+import { ValidateUserDto } from './dto/validate-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')

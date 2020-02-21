@@ -15,10 +15,10 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AppService } from '../app.service';
-import { CreateInfoDto } from '../dto/create-info.dto';
-import { UpdateInfoDto } from '../dto/update-info.dto';
-import { InfosService } from '../services/infos.service';
-import { Info } from '../interfaces/info.interface';
+import { CreateInfoDto } from './dto/create-info.dto';
+import { UpdateInfoDto } from './dto/update-info.dto';
+import { InfosService } from './infos.service';
+import { Info } from './interface/info.interface';
 
 @Controller('infos')
 export class InfosController {

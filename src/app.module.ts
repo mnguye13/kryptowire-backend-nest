@@ -1,8 +1,8 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { InfosModule } from './modules/info.module';
-import { UsersModule } from './modules/user.module';
+import { InfosModule } from './info/info.module';
+import { UsersModule } from './user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { GraphQLModule } from '@nestjs/graphql';
 import { AuthorsResolver } from './graphQL/author/author.resolvers';
