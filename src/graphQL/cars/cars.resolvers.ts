@@ -1,98 +1,55 @@
-import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Query,
+  Resolver,
+  Subscription,
+  Parent,
+  ResolveProperty,
+} from '@nestjs/graphql';
 import { argsToArgsConfig } from 'graphql/type/definition';
+import { CarsService } from './cars.service';
 
-@Resolver('')
-export class CarsResolver {
-  brands = [
-    {
-      name: 'Audi',
-      origin: ' German',
-    },
-    {
-      name: 'BMW',
-      origin: ' German',
-    },
-    {
-      name: 'Mercedes',
-      origin: ' German',
-    },
-  ];
-
-  models = [
-    {
-      label: 'S3',
-      brandName: 'Audi',
-      year: '2020',
-      price: 43000,
-    },
-    {
-      label: 'M3',
-      brandName: 'BMW',
-      year: '2020',
-      price: 70000,
-    },
-    {
-      label: 'RS7',
-      brandName: 'Audi',
-      year: '2020',
-      price: 2020,
-    },
-    {
-      label: 'CLA45',
-      brandName: 'Mercedes',
-      year: '2020',
-      price: 54800,
-    },
-    {
-      label: 'GT63s',
-      brandName: 'Mercedes',
-      year: '2020',
-      price: 136500,
-    },
-    {
-      label: 'C300',
-      brandName: 'Mercedes',
-      year: '2020',
-      price: 41400,
-    },
-  ];
-
+@Resolver()
+export class CarsResolvers {
+  constructor(private readonly carsService: CarsService) {}
   @Query()
-  getBrands() {
-    return this.brands;
+  info() {
+    return 'this is graphQL api for cars';
   }
 
   @Query()
-  getModels() {
-    return this.models;
+  async getBrands() {
+    return this.carsService.findAllBrands();
+  }
+
+  @Query()
+  async getModels() {
+    return this.carsService.findAllModels();
   }
 
   @Query()
   async getBrand(@Args('name') name: string): Promise<any> {
-    return this.brands.find(brand => brand.name === name);
+    return this.carsService.findOneBrand(name);
   }
 
   @Query()
   async getModel(@Args('label') label: string): Promise<any> {
-    return this.models.find(model => model.label === label);
+    return this.carsService.findOneModel(label);
   }
 
   @Mutation()
-  addBrand(@Args('brand') brand: any) {
-    this.brands.push(brand);
-    return brand;
+  async addBrand(@Args('brand') brand: any) {
+    return this.carsService.createBrand(brand);
   }
 
   @Mutation()
-  addModel(@Args('model') model: any) {
-    this.models.push(model);
-    return model;
+  async addModel(@Args('model') model: any) {
+    return this.carsService.createModel(model);
   }
 
   @Mutation()
-  updateCarPrice(@Args('model') model: any) {
-    const car = this.models.find(car => car.label === model.label);
-    car.price = model.price;
-    return car;
+  async updateCarPrice(@Args('model') model: any) {
+    return this.carsService.updateModelPrice(model);
   }
 }

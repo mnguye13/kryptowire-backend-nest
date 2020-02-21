@@ -5,7 +5,8 @@ import { InfosModule } from './modules/info.module';
 import { UsersModule } from './modules/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { GraphQLModule } from '@nestjs/graphql';
-import { CarsResolver } from './graphQL/cars/cars.resolvers';
+import { AuthorsResolver } from './graphQL/author/author.resolvers';
+import { CarsModule } from './graphQL/cars/cars.module';
 @Module({
   imports: [
     MongooseModule.forRoot(
@@ -18,8 +19,9 @@ import { CarsResolver } from './graphQL/cars/cars.resolvers';
     }),
     InfosModule,
     UsersModule,
+    CarsModule,
   ],
   controllers: [AppController],
-  providers: [AppService, CarsResolver],
+  providers: [AppService, AuthorsResolver],
 })
 export class AppModule {}
