@@ -1,79 +1,59 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
-import { Sequelize } from 'sequelize-typescript';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, getConnection } from 'typeorm';
 import { runInThisContext } from 'vm';
 import { IModel } from './IModel';
 import { Model } from './models.entity';
 
 @Injectable()
 export class ModelsService {
-  /*
   constructor(
-    
-    @InjectModel(Model)
-    private readonly modelModel: typeof Model,
-    private readonly sequelize: Sequelize,
-  )*/
-
-  private readonly models: IModel[] = [
-    {
-      label: 'S3',
-      brandName: 'Audi',
-      year: '2020',
-      price: 43000,
-    },
-    {
-      label: 'M3',
-      brandName: 'BMW',
-      year: '2020',
-      price: 70000,
-    },
-    {
-      label: 'RS7',
-      brandName: 'Audi',
-      year: '2020',
-      price: 2020,
-    },
-    {
-      label: 'CLA45',
-      brandName: 'Mercedes',
-      year: '2020',
-      price: 54800,
-    },
-    {
-      label: 'GT63s',
-      brandName: 'Mercedes',
-      year: '2020',
-      price: 136500,
-    },
-    {
-      label: 'C300',
-      brandName: 'Mercedes',
-      year: '2020',
-      price: 41400,
-    },
-  ];
+    @InjectRepository(Model)
+    private readonly modelRepository: Repository<Model>,
+  ) {}
 
   findAllModels() {
-    return this.models;
+    console.log('find all models');
+    return this.modelRepository.find();
+  }
+  async findOneModel(label: string) {
+    console.log('find one models');
+    const data = await this.modelRepository.findOne({
+      where: [{ label: label }],
+    });
+    return data;
   }
 
-  findOneModel(label: string) {
-    return this.models.find(m => m.label === label);
-  }
-  findBrand(brandName: string) {
-    console.log(brandName);
-    return this.models.filter(m => m.brandName === brandName);
+  async findBrand(brandName: string) {
+    const data = await this.modelRepository.find({
+      where: [{ brandName: brandName }],
+    });
+    return data;
   }
 
-  createModel(model: IModel) {
-    this.models.push(model);
+  async createModel(model: IModel) {
+    console.log('create all models');
+    try {
+      const data = await this.modelRepository.insert({
+        label: model.label,
+        price: model.price,
+        year: model.year,
+        brandName: model.brandName,
+      });
+      console.log(data);
+      return model;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  async updateModelPrice(model: IModel) {
+    const data = await this.modelRepository.update(
+      { label: model.label },
+      {
+        price: model.price,
+      },
+    );
+    console.log('Update model price');
     return model;
-  }
-
-  updateModelPrice(model: IModel) {
-    const car = this.models.find(m => m.label == model.label);
-    car.price = model.price;
-    return car;
   }
 }

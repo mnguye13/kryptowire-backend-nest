@@ -1,35 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { runInThisContext } from 'vm';
 import { IBrand } from './IBrand';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, getConnection } from 'typeorm';
 import { Brand } from './brands.entity';
 
 @Injectable()
 export class BrandsService {
-  private readonly brands: IBrand[] = [
-    {
-      name: 'Audi',
-      origin: ' German',
-    },
-    {
-      name: 'BMW',
-      origin: ' German',
-    },
-    {
-      name: 'Mercedes',
-      origin: ' German',
-    },
-  ];
+  constructor(
+    @InjectRepository(Brand)
+    private readonly brandRepository: Repository<Brand>,
+  ) {}
 
-  findAllBrands() {
-    return this.brands;
+  async findAllBrands() {
+    console.log('find all brands');
+    return await this.brandRepository.find();
   }
 
-  findOneBrand(name: string) {
-    return this.brands.find(b => b.name === name);
+  async findOneBrand(name: string) {
+    console.log('find one brand');
+    const data = await this.brandRepository.findOne({
+      where: [{ name: name }],
+    });
+    return data;
   }
 
-  createBrand(brand: IBrand) {
-    this.brands.push(brand);
+  async createBrand(brand: IBrand) {
+    try {
+      const data = await this.brandRepository.insert({
+        name: brand.name,
+        origin: brand.origin,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+
     return brand;
   }
 }

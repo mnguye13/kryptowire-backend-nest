@@ -21,7 +21,6 @@ export class ModelsResolvers {
 
   @Query()
   async getModels() {
-    console.log('Getting all modules');
     return this.modelsService.findAllModels();
   }
 
