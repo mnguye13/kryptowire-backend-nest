@@ -1,0 +1,20 @@
+type Brand {
+  name: String!
+  origin: String!
+  models: [Model]
+}
+
+input BrandInput {
+  name: String!
+  origin: String!
+}
+
+type Query {
+  info: String
+  getBrands: [Brand]
+  getBrand(name: String!): Brand
+}
+
+type Mutation {
+  addBrand(brand: BrandInput): Brand
+}

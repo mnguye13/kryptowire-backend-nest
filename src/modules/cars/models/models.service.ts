@@ -1,23 +1,21 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
+import { Sequelize } from 'sequelize-typescript';
 import { runInThisContext } from 'vm';
+import { IModel } from './IModel';
+import { Model } from './models.entity';
 
-export class CarsService {
-  private readonly brands = [
-    {
-      name: 'Audi',
-      origin: ' German',
-    },
-    {
-      name: 'BMW',
-      origin: ' German',
-    },
-    {
-      name: 'Mercedes',
-      origin: ' German',
-    },
-  ];
+@Injectable()
+export class ModelsService {
+  /*
+  constructor(
+    
+    @InjectModel(Model)
+    private readonly modelModel: typeof Model,
+    private readonly sequelize: Sequelize,
+  )*/
 
-  private readonly models = [
+  private readonly models: IModel[] = [
     {
       label: 'S3',
       brandName: 'Audi',
@@ -56,30 +54,24 @@ export class CarsService {
     },
   ];
 
-  findAllBrands() {
-    return this.brands;
-  }
   findAllModels() {
     return this.models;
   }
-  findOneBrand(name: string) {
-    return this.brands.find(b => b.name === name);
-  }
+
   findOneModel(label: string) {
     return this.models.find(m => m.label === label);
   }
-
-  createBrand(brand: any) {
-    this.brands.push(brand);
-    return brand;
+  findBrand(brandName: string) {
+    console.log(brandName);
+    return this.models.filter(m => m.brandName === brandName);
   }
 
-  createModel(model: any) {
+  createModel(model: IModel) {
     this.models.push(model);
     return model;
   }
 
-  updateModelPrice(model: any) {
+  updateModelPrice(model: IModel) {
     const car = this.models.find(m => m.label == model.label);
     car.price = model.price;
     return car;
