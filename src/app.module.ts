@@ -21,7 +21,8 @@ import { Model } from './modules/cars/models/models.entity';
     GraphQLModule.forRoot({
       debug: false,
       playground: true,
-      typePaths: ['./**/*.graphql'],
+      //typePaths: ['./**/*.graphql'],
+      autoSchemaFile: 'carSchema.gql',
     }),
     TypeOrmModule.forRoot({
       type: 'mariadb',
@@ -39,6 +40,6 @@ import { Model } from './modules/cars/models/models.entity';
     CarsModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AuthorsResolver],
+  providers: [AppService],
 })
 export class AppModule {}
