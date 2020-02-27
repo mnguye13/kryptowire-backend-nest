@@ -5,7 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, getConnection } from 'typeorm';
 import { Brand } from './brands.entity';
 import { BrandInput } from './dto/BrandInput';
-import { BrandType } from './dto/BrandType';
 
 @Injectable()
 export class BrandsService {
@@ -14,14 +13,14 @@ export class BrandsService {
     private readonly brandRepository: Repository<Brand>,
   ) {}
 
-  async findAllBrands(): Promise<BrandInput[]> {
+  async findAllBrands(): Promise<Brand[]> {
     return await this.brandRepository.find();
   }
 
-  async findOneBrand(name: string): Promise<BrandInput> {
+  async findOneBrand(name: string): Promise<Brand> {
     console.log('find one brand');
     const data = await this.brandRepository.findOne({
-      where: [{ name: name }],
+      name,
     });
     return data;
   }
@@ -29,7 +28,7 @@ export class BrandsService {
   async createBrand(brand: BrandInput): Promise<BrandInput> {
     try {
       const existedBrand = await this.brandRepository.findOne({
-        where: [{ name: brand.name }],
+        name: brand.name,
       });
       if (!existedBrand) {
         const data = await this.brandRepository.insert({

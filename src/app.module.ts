@@ -6,38 +6,58 @@ import { UsersModule } from './modules/user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { GraphQLModule } from '@nestjs/graphql';
 import { AuthorsResolver } from './modules/author/author.resolvers';
-import { CarsModule } from './modules/cars/cars.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { rootCertificates } from 'tls';
-import { Brand } from './modules/cars/brands/brands.entity';
-import { Model } from './modules/cars/models/models.entity';
+import { Brand } from './modules/brands/brands.entity';
+import { Model } from './modules/models/models.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { BrandsModule } from './modules/brands/brands.modules';
+import { ModelsModule } from './modules/models/models.modules';
+import mariadbConfiguration from './config/mariadb';
+import mongoConfiguration from './config/mongo';
 
+import * as path from 'path';
+import { config } from 'rxjs';
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://kevin:26nhan03@cluster0-hfcgn.mongodb.net/test?authSource=admin&replicaSet=Cluster0-shard-0&readPreference=primary&appname=MongoDB%20Compa',
-      { useNewUrlParser: true, useUnifiedTopology: true },
-    ),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get('MONGO_CONNECTION_STRING'),
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }),
+    }),
     GraphQLModule.forRoot({
       debug: false,
       playground: true,
       //typePaths: ['./**/*.graphql'],
       autoSchemaFile: 'carSchema.gql',
     }),
-    TypeOrmModule.forRoot({
-      type: 'mariadb',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'root',
-      database: 'test',
-      entities: [Brand, Model],
-      synchronize: true,
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        type: configService.get('DB_TYPE'),
+        host: configService.get('DB_HOST'),
+        port: configService.get('DB_PORT'),
+        username: configService.get('DB_USERNAME'),
+        password: configService.get('DB_PASSWORD'),
+        database: configService.get('DB_DATABASE'),
+        entities: [Brand, Model],
+        synchronize: process.env.NODE_ENV === 'development',
+        //synchronize: true,
+      }),
+    }),
+    ConfigModule.forRoot({
+      envFilePath: '.env',
     }),
 
     InfosModule,
     UsersModule,
-    CarsModule,
+    BrandsModule,
+    ModelsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

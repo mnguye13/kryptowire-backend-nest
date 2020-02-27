@@ -11,36 +11,34 @@ import { argsToArgsConfig } from 'graphql/type/definition';
 import { BrandsService } from './brands.service';
 import { ModelsService } from '../models/models.service';
 import { IBrand } from './interfaces/IBrand';
-import { BrandType } from './dto/BrandType';
 import { BrandInput } from './dto/BrandInput';
 import { Brand } from './brands.entity';
 import { Model } from '../models/models.entity';
-import { ModelType } from '../models/dto/ModelType';
 import { ModelInput } from '../models/dto/ModelInput';
-@Resolver(of => BrandType)
+@Resolver(of => Brand)
 export class BrandsResolvers {
   constructor(
     private readonly brandsService: BrandsService,
     private readonly modelsService: ModelsService,
   ) {}
 
-  @Query(() => [BrandType])
-  async getBrands(): Promise<BrandInput[]> {
+  @Query(() => [Brand])
+  async getBrands(): Promise<Brand[]> {
     return this.brandsService.findAllBrands();
   }
 
-  @Query(() => BrandType)
-  async getBrand(@Args('name') name: string): Promise<BrandInput> {
+  @Query(() => Brand)
+  async getBrand(@Args('name') name: string): Promise<Brand> {
     return this.brandsService.findOneBrand(name);
   }
 
-  @Mutation(() => BrandType)
+  @Mutation(() => Brand)
   async addBrand(@Args('brand') brand: BrandInput): Promise<BrandInput> {
     return this.brandsService.createBrand(brand);
   }
 
-  @ResolveProperty('models', returns => [ModelInput])
-  async models(carModel: BrandType): Promise<ModelInput[]> {
-    return this.modelsService.findBrand(carModel);
+  @ResolveProperty('models', returns => [Model])
+  async models(brand: Brand): Promise<Model[]> {
+    return this.modelsService.findModelsByBrand(brand.name);
   }
 }

@@ -3,15 +3,23 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type Brand {
+  name: String!
+  origin: String!
+  models: [Model!]!
+}
+
 input BrandInput {
   name: String!
   origin: String!
 }
 
-type BrandType {
-  name: String!
-  origin: String!
-  models: [ModelType!]!
+type Model {
+  label: String!
+  year: String!
+  price: Float!
+  brandName: String!
+  brand: Brand!
 }
 
 input ModelInput {
@@ -26,22 +34,15 @@ input ModelPriceInput {
   price: Int!
 }
 
-type ModelType {
-  label: String!
-  year: String!
-  price: Int!
-  brand: BrandType!
-}
-
 type Mutation {
-  addBrand(brand: BrandInput!): BrandType!
-  addModel(model: ModelInput!): ModelType!
-  updateCarPrice(model: ModelPriceInput!): ModelType!
+  addBrand(brand: BrandInput!): Brand!
+  addModel(model: ModelInput!): Model!
+  updateCarPrice(model: ModelPriceInput!): Model!
 }
 
 type Query {
-  getBrands: [BrandType!]!
-  getBrand(name: String!): BrandType!
-  getModels: [ModelType!]!
-  getModel(label: String!): ModelType!
+  getBrands: [Brand!]!
+  getBrand(name: String!): Brand!
+  getModels: [Model!]!
+  getModel(label: String!): Model!
 }

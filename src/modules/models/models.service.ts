@@ -2,11 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, getConnection } from 'typeorm';
 import { runInThisContext } from 'vm';
-import { IModel } from './dto/IModel';
+import { IModel } from './interfaces/IModel';
 import { Model } from './models.entity';
 import { ModelInput } from './dto/ModelInput';
 import { ModelPriceInput } from './dto/ModelPriceInput';
-import { ModelType } from './dto/ModelType';
 import { Brand } from '../brands/brands.entity';
 import { BrandInput } from '../brands/dto/BrandInput';
 
@@ -17,22 +16,21 @@ export class ModelsService {
     private readonly modelRepository: Repository<Model>,
   ) {}
 
-  async findAllModels(): Promise<ModelInput[]> {
+  async findAllModels(): Promise<Model[]> {
     console.log('find all models');
     return this.modelRepository.find();
   }
-  async findOneModel(label: string): Promise<ModelInput> {
+
+  async findOneModel(label: string): Promise<Model> {
     console.log('find one models');
     const data = await this.modelRepository.findOne({
-      where: [{ label: label }],
+      label,
     });
     return data;
   }
 
-  async findBrand(model: BrandInput): Promise<ModelInput[]> {
-    const data = await this.modelRepository.find({
-      where: [{ brandName: model.name }],
-    });
+  async findModelsByBrand(brandName: string): Promise<Model[]> {
+    const data = await this.modelRepository.find({ brandName });
     return data;
   }
 
@@ -52,14 +50,16 @@ export class ModelsService {
     }
   }
 
-  async updateModelPrice(model: ModelPriceInput): Promise<ModelPriceInput> {
+  async updateModelPrice(
+    modelPriceInput: ModelPriceInput,
+  ): Promise<ModelPriceInput> {
     const data = await this.modelRepository.update(
-      { label: model.label },
+      { label: modelPriceInput.label },
       {
-        price: model.price,
+        price: modelPriceInput.price,
       },
     );
     console.log('Update model price');
-    return model;
+    return modelPriceInput;
   }
 }
