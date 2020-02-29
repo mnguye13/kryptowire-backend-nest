@@ -46,9 +46,10 @@ export class ModelsResolvers {
     return this.modelsService.updateModelPrice(model);
   }
 
-  @ResolveProperty('brand', () => Brand)
-  async brand(@Parent() model: ModelInput): Promise<Brand> {
-    console.log('Resolvering property for :', model);
-    return this.brandsService.findOneBrand(model.brandName);
+  @ResolveProperty('getBrand', () => Brand)
+  async getBrand(@Parent() model: ModelInput): Promise<Brand> {
+    //console.log('Resolvering property for :', model);
+
+    return this.brandsService.findBrandbyModels(model.brandId);
   }
 }

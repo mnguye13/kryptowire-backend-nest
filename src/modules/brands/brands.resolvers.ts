@@ -37,8 +37,8 @@ export class BrandsResolvers {
     return this.brandsService.createBrand(brand);
   }
 
-  @ResolveProperty('models', returns => [Model])
-  async models(brand: Brand): Promise<Model[]> {
+  @ResolveProperty('getModels', returns => [Model])
+  async getModels(brand: Brand): Promise<Model[]> {
     return this.modelsService.findModelsByBrand(brand.name);
   }
 }

@@ -1,4 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToOne,
+  ManyToOne,
+  JoinTable,
+  JoinColumn,
+} from 'typeorm';
 import { ObjectType, Field, Int, ID } from 'type-graphql';
 import { IsString, IsNotEmpty, IsNumber, IsInt } from 'class-validator';
 import { Brand } from '../brands/brands.entity';
@@ -21,12 +29,14 @@ export class Model {
   price: number;
 
   @Column()
-  @Field()
-  brandName: string;
+  brandId: number;
 
-  @OneToOne(
+  @ManyToOne(
     type => Brand,
     brand => brand.models,
+    {
+      cascade: true,
+    },
   )
   @Field(type => Brand)
   brand?: Brand;

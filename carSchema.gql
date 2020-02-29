@@ -7,6 +7,7 @@ type Brand {
   name: String!
   origin: String!
   models: [Model!]!
+  getModels: [Model!]!
 }
 
 input BrandInput {
@@ -18,8 +19,8 @@ type Model {
   label: String!
   year: String!
   price: Float!
-  brandName: String!
   brand: Brand!
+  getBrand: Brand!
 }
 
 input ModelInput {
@@ -27,6 +28,7 @@ input ModelInput {
   year: String!
   brandName: String!
   price: Int!
+  brandId: Float!
 }
 
 input ModelPriceInput {

@@ -4,6 +4,9 @@ import {
   PrimaryGeneratedColumn,
   OneToOne,
   OneToMany,
+  JoinTable,
+  JoinColumn,
+  ManyToMany,
 } from 'typeorm';
 import { ObjectType, Field, Int, ID } from 'type-graphql';
 import { IsString, IsNotEmpty, IsNumber, IsInt } from 'class-validator';

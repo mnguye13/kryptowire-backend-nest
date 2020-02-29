@@ -20,4 +20,7 @@ export class ModelInput {
 
   @Field(() => Int)
   readonly price: number;
+
+  @Field()
+  readonly brandId: number;
 }

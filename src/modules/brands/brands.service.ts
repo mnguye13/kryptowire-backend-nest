@@ -5,12 +5,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, getConnection } from 'typeorm';
 import { Brand } from './brands.entity';
 import { BrandInput } from './dto/BrandInput';
+import { Model } from '../models/models.entity';
 
 @Injectable()
 export class BrandsService {
   constructor(
     @InjectRepository(Brand)
     private readonly brandRepository: Repository<Brand>,
+    @InjectRepository(Model)
+    private readonly modelRepository: Repository<Model>,
   ) {}
 
   async findAllBrands(): Promise<Brand[]> {
@@ -18,11 +21,27 @@ export class BrandsService {
   }
 
   async findOneBrand(name: string): Promise<Brand> {
-    console.log('find one brand');
-    const data = await this.brandRepository.findOne({
-      name,
-    });
-    return data;
+    try {
+      console.log('find one brand');
+      //const brand = await this.brandRepository.find({ relations: ['models'] });
+      //console.log(name);
+
+      const data = await this.brandRepository.findOne({
+        name,
+      });
+      return data;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async findBrandbyModels(id: number): Promise<Brand> {
+    try {
+      const data = await this.brandRepository.findOne({ id });
+      return data;
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async createBrand(brand: BrandInput): Promise<BrandInput> {

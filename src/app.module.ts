@@ -16,8 +16,6 @@ import { ModelsModule } from './modules/models/models.modules';
 import mariadbConfiguration from './config/mariadb';
 import mongoConfiguration from './config/mongo';
 
-import * as path from 'path';
-import { config } from 'rxjs';
 @Module({
   imports: [
     MongooseModule.forRootAsync({
@@ -46,8 +44,7 @@ import { config } from 'rxjs';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_DATABASE'),
         entities: [Brand, Model],
-        synchronize: process.env.NODE_ENV === 'development',
-        //synchronize: true,
+        synchronize: configService.get('NODE_ENV') === 'development',
       }),
     }),
     ConfigModule.forRoot({
