@@ -18,6 +18,7 @@ import { CreateInfoDto } from './dto/create-info.dto';
 import { UpdateInfoDto } from './dto/update-info.dto';
 import { InfosService } from './infos.service';
 import { Info } from './interface/info.interface';
+import { IInfo } from './interface/IInfo';
 
 @Controller('infos')
 export class InfosController {
@@ -33,6 +34,11 @@ export class InfosController {
   @Get()
   async findAll(): Promise<Info[]> {
     return this.infosService.findAll();
+  }
+
+  @Get('hello')
+  getHello(): string {
+    return this.infosService.getHello();
   }
 
   @Get(':id')

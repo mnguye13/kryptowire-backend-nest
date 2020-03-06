@@ -20,6 +20,10 @@ export class BrandsService {
     return await this.brandRepository.find();
   }
 
+  getBrandsGreeting(): string {
+    return 'API for brands';
+  }
+
   async findOneBrand(name: string): Promise<Brand> {
     try {
       console.log('find one brand');
@@ -35,7 +39,7 @@ export class BrandsService {
     }
   }
 
-  async findBrandbyModels(id: number): Promise<Brand> {
+  async findBrandbyId(id: number): Promise<Brand> {
     try {
       const data = await this.brandRepository.findOne({ id });
       return data;

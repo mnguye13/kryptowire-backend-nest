@@ -22,5 +22,5 @@ export class ModelInput {
   readonly price: number;
 
   @Field()
-  readonly brandId: number;
+  readonly brandId?: number;
 }

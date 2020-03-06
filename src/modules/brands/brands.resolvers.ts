@@ -22,6 +22,11 @@ export class BrandsResolvers {
     private readonly modelsService: ModelsService,
   ) {}
 
+  @Query(() => String)
+  async getBrandsGreeting() {
+    return this.brandsService.getBrandsGreeting();
+  }
+
   @Query(() => [Brand])
   async getBrands(): Promise<Brand[]> {
     return this.brandsService.findAllBrands();
@@ -37,8 +42,8 @@ export class BrandsResolvers {
     return this.brandsService.createBrand(brand);
   }
 
-  @ResolveProperty('getModels', returns => [Model])
-  async getModels(brand: Brand): Promise<Model[]> {
+  @ResolveProperty('models', returns => [Model])
+  async models(brand: Brand): Promise<Model[]> {
     return this.modelsService.findModelsByBrand(brand.name);
   }
 }

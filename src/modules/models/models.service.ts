@@ -8,6 +8,7 @@ import { ModelInput } from './dto/ModelInput';
 import { ModelPriceInput } from './dto/ModelPriceInput';
 import { Brand } from '../brands/brands.entity';
 import { BrandInput } from '../brands/dto/BrandInput';
+import { isLabeledStatement } from 'typescript';
 
 @Injectable()
 export class ModelsService {
@@ -17,6 +18,10 @@ export class ModelsService {
     @InjectRepository(Brand)
     private readonly brandRepository: Repository<Brand>,
   ) {}
+
+  getModelsGreeting(): string {
+    return 'API for models';
+  }
 
   async findAllModels(): Promise<Model[]> {
     console.log('find all models');
@@ -48,19 +53,27 @@ export class ModelsService {
     }
   }
 
-  async createModel(model: ModelInput): Promise<ModelInput> {
+  async createModel(model: ModelInput): Promise<Model> {
     console.log('create all models');
     try {
       const brand = await this.brandRepository.findOne({
         where: { name: model.brandName },
       });
-      const data = await this.modelRepository.insert({
+
+      const data = this.modelRepository.create({
         label: model.label,
         price: model.price,
         year: model.year,
         brandId: brand.id,
+        /*
+        brand: {
+          name: model.brandName,
+        },*/
       });
-      return model;
+      await this.modelRepository.save(data);
+      console.log(data);
+
+      return data;
     } catch (e) {
       console.log(e);
     }

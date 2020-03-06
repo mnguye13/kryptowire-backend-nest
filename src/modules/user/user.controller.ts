@@ -31,6 +31,11 @@ export class UsersController {
     private readonly usersService: UsersService, //private readonly authService: AuthService,
   ) {}
 
+  @Get()
+  getHello(): string {
+    return this.usersService.getHello();
+  }
+
   @Post('/register')
   @Header('Cache-Control', 'none')
   async create(@Body() createUserDto: CreateUserDto) {
@@ -55,16 +60,18 @@ export class UsersController {
     return req.user;
   }
 
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return this.usersService.findOne(id);
+  }
+
   /*
   @Get()
   async findAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
   
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.usersService.findOne(id);
-  }
+ 
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {

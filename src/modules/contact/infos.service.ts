@@ -2,6 +2,7 @@ import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Info } from './interface/info.interface';
+import { IInfo } from './interface/IInfo';
 import { CreateInfoDto } from './dto/create-info.dto';
 import { UpdateInfoDto } from './dto/update-info.dto';
 
@@ -10,6 +11,10 @@ export class InfosService {
   constructor(
     @InjectModel('InfoData') private readonly infoModel: Model<Info>,
   ) {}
+
+  getHello(): string {
+    return 'API for Kryptowire Info';
+  }
 
   async create(createInfoDto: CreateInfoDto): Promise<Info> {
     const createdInfo = new this.infoModel(createInfoDto);

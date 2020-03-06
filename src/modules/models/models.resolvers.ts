@@ -24,6 +24,11 @@ export class ModelsResolvers {
     private readonly brandsService: BrandsService,
   ) {}
 
+  @Query(() => String)
+  async getModelsGreeting() {
+    return this.modelsService.getModelsGreeting();
+  }
+
   @Query(() => [Model])
   async getModels(): Promise<Model[]> {
     return this.modelsService.findAllModels();
@@ -35,7 +40,7 @@ export class ModelsResolvers {
   }
 
   @Mutation(() => Model)
-  async addModel(@Args('model') model: ModelInput): Promise<ModelInput> {
+  async addModel(@Args('model') model: ModelInput): Promise<Model> {
     return this.modelsService.createModel(model);
   }
 
@@ -46,10 +51,22 @@ export class ModelsResolvers {
     return this.modelsService.updateModelPrice(model);
   }
 
-  @ResolveProperty('getBrand', () => Brand)
-  async getBrand(@Parent() model: ModelInput): Promise<Brand> {
+  @ResolveProperty('brand', () => Brand)
+  async brand(@Parent() model: ModelInput): Promise<Brand> {
     //console.log('Resolvering property for :', model);
 
-    return this.brandsService.findBrandbyModels(model.brandId);
+    return this.brandsService.findBrandbyId(model.brandId);
   }
 }
+
+/**
+ * {
+ *   model {
+ *      name
+ *      brand {
+ *        name
+ * }
+ * }
+ * }
+ *
+ */

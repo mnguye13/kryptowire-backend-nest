@@ -15,6 +15,10 @@ export class UsersService {
   ) {}
   /*---*/
 
+  getHello(): string {
+    return 'API for Kryptowire Users';
+  }
+
   async create(createUserDto: CreateUserDto): Promise<User> {
     if (createUserDto.password == createUserDto.password2) {
       const user = await this.userModel.findOne({ email: createUserDto.email });
