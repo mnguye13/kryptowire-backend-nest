@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
 
 import { BrandsResolvers } from '../brands/brands.resolvers';
 import { BrandsService } from '../brands/brands.service';
 import { ModelsResolvers } from './models.resolvers';
 import { ModelsService } from './models.service';
 import { ModelsModule } from './models.modules';
-import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
 import { Brand } from '../brands/brands.entity';
 import { Model } from './models.entity';
 import { ModelPriceInput } from './dto/ModelPriceInput';

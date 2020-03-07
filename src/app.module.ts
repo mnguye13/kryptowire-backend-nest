@@ -15,6 +15,7 @@ import { BrandsModule } from './modules/brands/brands.modules';
 import { ModelsModule } from './modules/models/models.modules';
 import mariadbConfiguration from './config/mariadb';
 import mongoConfiguration from './config/mongo';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -33,6 +34,8 @@ import mongoConfiguration from './config/mongo';
       //typePaths: ['./**/*.graphql'],
       autoSchemaFile: 'carSchema.gql',
     }),
+    DatabaseModule,
+    /*
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -46,7 +49,7 @@ import mongoConfiguration from './config/mongo';
         entities: [Brand, Model],
         synchronize: configService.get('NODE_ENV') === 'development',
       }),
-    }),
+    }),*/
     ConfigModule.forRoot({
       envFilePath: '.env',
     }),
