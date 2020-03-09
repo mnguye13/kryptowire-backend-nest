@@ -54,6 +54,7 @@ export class ModelsResolvers {
   @ResolveProperty('brand', () => Brand)
   async brand(@Parent() model: ModelInput): Promise<Brand> {
     //console.log('Resolvering property for :', model);
+    //console.log(model.brandId);
 
     return this.brandsService.findBrandbyId(model.brandId);
   }

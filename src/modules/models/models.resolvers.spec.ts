@@ -17,7 +17,7 @@ export const mockModelRepository = jest.fn(() => ({
         { id: 1, label: 'S3', price: 30000, year: '2020', brandId: 3 },
         { id: 2, label: 'M3', price: 70000, year: '2020', brandId: 4 },
         { id: 3, label: 'RS7', price: 120000, year: '2020', brandId: 3 },
-        { id: 6, label: 'GTS63', price: 1365000, year: '2020', brandId: 3 },
+        { id: 6, label: 'GTS63', price: 1365000, year: '2020', brandId: 5 },
       ]);
     }),
   findOne: () =>
@@ -87,7 +87,7 @@ describe('ModelsResolvers', () => {
         { id: 1, label: 'S3', price: 30000, year: '2020', brandId: 3 },
         { id: 2, label: 'M3', price: 70000, year: '2020', brandId: 4 },
         { id: 3, label: 'RS7', price: 120000, year: '2020', brandId: 3 },
-        { id: 6, label: 'GTS63', price: 1365000, year: '2020', brandId: 3 },
+        { id: 6, label: 'GTS63', price: 1365000, year: '2020', brandId: 5 },
       ];
       //jest.spyOn(modelsResolvers, 'getModels').mockImplementation(() => result);
       expect(await modelsResolvers.getModels()).toStrictEqual(result);

@@ -44,7 +44,7 @@ describe('BrandsSarvice', () => {
       const result: Model = {
         id: 1,
         label: 'S3',
-        price: 41500,
+        price: 30000,
         year: '2020',
         brandId: 3,
       };
