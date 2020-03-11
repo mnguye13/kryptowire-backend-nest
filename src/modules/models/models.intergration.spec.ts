@@ -45,6 +45,7 @@ describe('Model Module Integration', () => {
       year: '2020',
       price: 136500,
       brandName: 'Mercedes',
+      brandId: 5,
     };
     it('should return all models', async () => {
       const data = await modelResolvers.getModels();
@@ -55,11 +56,11 @@ describe('Model Module Integration', () => {
       const data = await modelResolvers.getModel('RS7');
       expect(data.price).toBe(120000);
     });
-    /*
+
     it('should return brand by model', async () => {
       const data = await modelResolvers.brand(testModel);
       console.log(data);
       expect(data.name).toBe('Mercedes');
-    });*/
+    });
   });
 });

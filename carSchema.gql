@@ -9,11 +9,6 @@ type Brand {
   models: [Model!]!
 }
 
-input BrandInput {
-  name: String!
-  origin: String!
-}
-
 type Model {
   label: String!
   year: String!
@@ -35,15 +30,11 @@ input ModelPriceInput {
 }
 
 type Mutation {
-  addBrand(brand: BrandInput!): Brand!
   addModel(model: ModelInput!): Model!
   updateCarPrice(model: ModelPriceInput!): Model!
 }
 
 type Query {
-  getBrandsGreeting: String!
-  getBrands: [Brand!]!
-  getBrand(name: String!): Brand!
   getModelsGreeting: String!
   getModels: [Model!]!
   getModel(label: String!): Model!
